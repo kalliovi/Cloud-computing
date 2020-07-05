@@ -1,0 +1,26 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: pull
+spec:
+  schedule: "*/60 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: pull
+            image: ubuntu_git
+            imagePullPolicy: IfNotPresent
+            args:
+            - /bin/sh
+            - -c
+            - cd /usr/mount_pull && git pull origin master && echo testing it works
+            volumeMounts:
+            - name: task-pv-storage
+              mountPath: /usr/mount_pull
+          restartPolicy: Never
+          volumes: 
+            - name: task-pv-storage
+              persistentVolumeClaim:
+                claimName: task-pv-claim
