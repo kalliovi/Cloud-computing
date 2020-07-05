@@ -1,0 +1,21 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: php7-service
+  namespace: default
+  labels:
+    app: php-site
+  #annotations:
+   #service.beta.kubernetes.io/linode-loadbalancer-throttle: "4"
+spec:
+  ports:
+  - name: listener
+    protocol: TCP
+    port: 80
+  selector:
+    app: php-site
+  #type: LoadBalancer
+  type: NodePort
+  sessionAffinity: None
+
